@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+  <style>
+    .main-container {
+      min-height: calc(100vh - 50px);
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'index' %}">My Blog</a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <form class="my-2 my-lg-0 d-flex align-items-center">
+          <input class="form-control form-control-sm mr-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <ul class="navbar-nav ml-auto mr-2">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'list_drafts' %}">Drafts</a>
+          </li>
+        </ul>
+
+        {% if user.is_authenticated %}
+        <div class="d-flex align-items-center">
+          <span class="font-weight-bold">Welcome:</span>
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              {{ user.username }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{% url 'create_post' %}">New Post</a>
+              <a class="dropdown-item" href="#">Edit Profile</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <a class="btn btn-sm btn-primary" href="{% url 'login' %}">Log In</a>
+        <a class="ml-2 btn btn-sm btn-success" href="{% url 'register' %}">Sign Up</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+  <div class="d-flex flex-column align-items-stretch justify-content-between" style="min-height: calc(100vh - 54px);">
+    <div>
+      {% block content %}
+      {% endblock content %}
+    </div>
+
+    <footer class="bg-secondary d-flex align-items-center py-5">
+      <div class="container pt-2">
+        <p class="text-center text-white mt-2">Copyright &copy; Onur Güler, 2020</p>
+      </div>
+    </footer>
+  </div>
+  <script src="{% static 'vendor/js/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/js/popper.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

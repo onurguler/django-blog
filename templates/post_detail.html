@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4">
+  <h1>{{ post.title }}</h1>
+  <h2>{{ post.owner.username }}</h2>
+  <p style="overflow: hidden; word-wrap: break-word;">{{ post.body | safe | linebreaksbr }}</p>
+  <p>{{ post.created_at }}</p>
+</div>
+{% endblock content %}
