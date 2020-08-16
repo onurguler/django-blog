@@ -9,7 +9,7 @@ from .models import Post
 
 
 def index(request):
-    posts = Post.objects.filter(published=True).order_by('-created_at')
+    posts = Post.objects.filter(published=True).order_by('-updated_at')
     return render(request, "index.html", context={"posts": posts})
 
 
@@ -61,6 +61,28 @@ def post_detail(request, post_id):
         post = get_object_or_404(Post.objects.filter(
             published=True).all(), pk=post_id)
     return render(request, 'post_detail.html', context={'post': post})
+
+
+@login_required
+def post_edit(request, post_id):
+    post = get_object_or_404(request.user.posts.all(), pk=post_id)
+    form = PostCreateForm(request.POST or None, instance=post)
+    if form.is_valid():
+        post = form.save()
+        if post.published:
+            return redirect('post_detail', post_id=post.pk)
+        else:
+            return redirect('list_drafts')
+    return render(request, "edit_post.html", context={'form': form, 'post': post})
+
+
+@login_required
+def post_delete(request, post_id):
+    post = get_object_or_404(request.user.posts.all(), pk=post_id)
+    if request.POST:
+        post.delete()
+        return redirect('index')
+    return render(request, 'post_delete_confirm.html', context={'post': post})
 
 
 @login_required

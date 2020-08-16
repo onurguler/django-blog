@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LogoutView, LoginView
 
-from blog.views import index, register, create_new_post, post_detail, list_drafts
+from blog.views import index, register, create_new_post, post_detail, list_drafts, post_edit
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +27,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('create-post/', create_new_post, name='create_post'),
     path('posts/<int:post_id>/', post_detail, name="post_detail"),
+    path('posts/<int:post_id>/edit/', post_edit, name="edit_post"),
     path('drafts/', list_drafts, name='list_drafts'),
 ]
